@@ -6,11 +6,13 @@ import (
 	"net/url"
 )
 
-// Transport ...
+// Transport is a http.RoundTripper that includes an API key in each request.
 type Transport struct {
 	APIKey string
 }
 
+// Client returns an HTTP client that will include the API key in the request,
+// and is safe for concurrent use by multiple goroutines.
 func (t *Transport) Client() *http.Client {
 	return &http.Client{
 		Transport: t,
@@ -18,6 +20,9 @@ func (t *Transport) Client() *http.Client {
 }
 
 // RoundTrip implements the http.RoundTripper interface.
+// It makes a copy of the HTTP request so that it complies with the requirements
+// of the interface and adds the API key to the new request before calling the
+// default http.RoundTripper.
 func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if t.APIKey == "" {
 		return nil, errors.New("API key is required")
