@@ -1,7 +1,7 @@
-name: PR
+name: CI
 
 on:
-  pull_request:
+  push:
     branches:
     - main
     paths-ignore:
@@ -28,3 +28,21 @@ jobs:
       run: test -z "$(go vet ./...)"
     - name: Run tests
       run: go test -v ./...
+
+  release:
+    name: Release?
+    needs: [ verify ]
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Prepare a release
+      id: release
+      uses: google-github-actions/release-please-action@v4
+      with:
+        config-file: .github/release-config.json
+        manifest-file: .github/release-manifest.json
+        token: ${{ secrets.GITHUB_TOKEN }}
