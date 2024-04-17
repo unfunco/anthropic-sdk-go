@@ -1,0 +1,37 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+    - main
+    paths-ignore:
+    - .editorconfig
+    - .gitignore
+    - LICENSE.md
+    - README.md
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
+    - name: Check formatting
+      run: test -z "$(go fmt ./...)"
+
+  build:
+    name: Build
+    needs: [ verify ]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
