@@ -7,47 +7,47 @@
 > and [TypeScript/JavaScript](https://github.com/anthropics/anthropic-sdk-typescript).
 
 Client library for interacting with the [Anthropic] safety-first language model
-REST APIs.
+REST APIs.\
+Documentation for the REST API can be found at [docs.anthropic.com].
 
 ## Getting started
 
 ### Requirements
 
+- [Claude API key]
 - [Go] 1.22+
 
 ### Installation and usage
 
+Import the module and run the `go get` command without any arguments to resolve
+and add the SDK to your dependencies.
+
 ```go
-package main
+import "github.com/unfunco/anthropic-sdk-go"
+```
 
-import (
-    "context"
-    "fmt"
-    "os"
+Construct a new REST API client with a `http.Client` derived from a Transport
+containing your [Claude API key]. The derived HTTP client will automatically add
+the API key as a header to each request sent to the API.
 
-    "github.com/unfunco/anthropic-sdk-go"
-)
+```go
+transport := &anthropic.Transport{APIKey: os.Getenv("ANTHROPIC_API_KEY")}
+claude := anthropic.NewClient(transport.Client())
+```
 
-func main() {
-    ctx := context.Background()
+Once constructed, you can use the client to interact with the REST API.
 
-    transport := &anthropic.Transport{APIKey: os.Getenv("ANTHROPIC_API_KEY")}
-    claude := anthropic.NewClient(transport.Client())
-
-    if resp, httpResp, err := claude.Messages.Create(ctx, &anthropic.CreateMessageInput{
-        MaxTokens: 1024,
-        Messages: []anthropic.Message{
-            {Content: "Hello, Claude!", Role: "user"},
+```go
+data, _, err := claude.Messages.Create(context.Background(), &anthropic.CreateMessageInput{
+    MaxTokens: 1024,
+    Messages: []anthropic.Message{
+        {
+            Content: "Hello, Claude!",
+            Role:    "user",
         },
-        Model: anthropic.Claude3Opus20240229,
-    }); err == nil {
-        fmt.Println(httpResp.StatusCode)
-        fmt.Println(resp)
-    } else {
-        _, _ = fmt.Fprintln(os.Stderr, err)
-        os.Exit(1)
-    }
-}
+    },
+    Model: anthropic.Claude3Opus20240229,
+})
 ```
 
 ### Development and testing
@@ -57,6 +57,12 @@ Clone the repository and change into the `anthropic-sdk-go` directory.
 ```bash
 git clone git@github.com:unfunco/anthropic-sdk-go.git
 cd anthropic-sdk-go
+```
+
+Run the unit tests with coverage to ensure everything is working as expected.
+
+```bash
+go test -cover -v ./...
 ```
 
 ## References
@@ -69,6 +75,8 @@ cd anthropic-sdk-go
 Made available under the terms of the [MIT License].
 
 [anthropic]: https://www.anthropic.com
+[claude api key]: https://www.anthropic.com/api
 [daniel morris]: https://unfun.co
+[docs.anthropic.com]: https://docs.anthropic.com
 [go]: https://go.dev
 [mit license]: LICENSE.md
