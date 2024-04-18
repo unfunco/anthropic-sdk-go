@@ -27,7 +27,7 @@ jobs:
     - name: Look for suspicious constructs
       run: test -z "$(go vet ./...)"
     - name: Run tests
-      run: go test -v ./...
+      run: go test -cover -v ./...
 
   release:
     name: Release?
