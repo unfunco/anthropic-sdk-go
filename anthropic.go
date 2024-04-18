@@ -14,7 +14,7 @@ import (
 const (
 	defaultAPIVersion = "2023-06-01"
 	defaultBaseURL    = "https://api.anthropic.com/v1/"
-	defaultUserAgent  = "unfunco/anthropic-sdk-go@v0.0.0"
+	defaultUserAgent  = "unfunco/anthropic-sdk-go@v0.1.0"
 )
 
 // Client manages communication with the Anthropic REST API.
