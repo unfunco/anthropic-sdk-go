@@ -46,3 +46,14 @@ jobs:
         config-file: .github/release-config.json
         manifest-file: .github/release-manifest.json
         token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Configure version
+      if: ${{ steps.release.outputs.prs_created }}
+      run: |
+        version=${{ steps.release.outputs.tag_name }}
+        version=${version#v}
+        sed -i "s/unfunco\/anthropic-sdk-go@v[0-9]*\.[0-9]*\.[0-9]*/unfunco\/anthropic-sdk-go@v$version/" anthropic.go
+        git config user.name "David Letterman"
+        git config user.email "48985810+david-letterman@users.noreply.github.com"
+        git add anthropic.go
+        git commit -m "Configure version number"
+        git push
