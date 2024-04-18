@@ -19,30 +19,40 @@ const (
 
 // Client manages communication with the Anthropic REST API.
 type Client struct {
-	baseURL  *url.URL
-	client   *http.Client
-	reusable service
+	baseURL    *url.URL
+	httpClient *http.Client
+	reusable   service
 
 	Messages *MessagesService
 }
 
 type service struct{ client *Client }
 
-// NewClient returns a new Anthropic REST API client.
-func NewClient(client *http.Client) *Client {
-	if client == nil {
-		client = &http.Client{}
+// NewClient returns a new Anthropic REST API client. If a nil httpClient is
+// provided, a new http.Client will be used.
+// Adapted from go-github's NewClient method:
+// https://github.com/google/go-github/blob/master/github/github.go
+func NewClient(httpClient *http.Client) *Client {
+	if httpClient == nil {
+		httpClient = &http.Client{}
 	}
 
-	claude := &Client{client: client}
+	claude := &Client{httpClient: httpClient}
 	claude.baseURL, _ = url.Parse(defaultBaseURL)
 	claude.reusable.client = claude
+
 	claude.Messages = (*MessagesService)(&claude.reusable)
 
 	return claude
 }
 
-// NewRequest creates an API request.
+// NewRequest creates an API request. A relative URL can be provided in path,
+// in which case it is resolved relative to the BaseURL of the Client.
+// Paths should always be specified without a preceding slash.
+// If specified, the value pointed to by body is JSON encoded and included as
+// the request body.
+// Adapted from go-github's Client.NewRequest method:
+// https://github.com/google/go-github/blob/master/github/github.go
 func (c *Client) NewRequest(method, path string, body any) (*http.Request, error) {
 	u, err := c.baseURL.Parse(path)
 	if err != nil {
@@ -75,10 +85,21 @@ func (c *Client) NewRequest(method, path string, body any) (*http.Request, error
 	return req, nil
 }
 
-// Do sends an API request and returns the API response.
+// Do sends an API request and returns the API response. The API response is
+// JSON decoded and stored in the value pointed to by v, or returned as an error
+// if an API error has occurred. If v implements the io.Writer interface, the
+// raw response body will be written to v without attempting to first decode it.
+// If v is nil, and no error occurs, the response is returned as-is.
+// Adapted from go-github's Client.BareDo and Client.Do methods:
+// https://github.com/google/go-github/blob/master/github/github.go
 func (c *Client) Do(ctx context.Context, req *http.Request, v any) (*http.Response, error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
 	req = req.WithContext(ctx)
-	resp, err := c.client.Do(req)
+
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		select {
 		case <-ctx.Done():
@@ -88,6 +109,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v any) (*http.Respon
 
 		return nil, err
 	}
+
 	//goland:noinspection GoUnhandledErrorResult
 	defer resp.Body.Close()
 
