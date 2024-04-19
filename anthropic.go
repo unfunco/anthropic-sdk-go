@@ -127,5 +127,5 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v any) (*http.Respon
 		}
 	}
 
-	return resp, nil
+	return resp, err
 }
