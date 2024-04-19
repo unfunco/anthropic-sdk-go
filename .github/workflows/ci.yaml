@@ -24,6 +24,10 @@ jobs:
         go-version-file: go.mod
     - name: Check formatting
       run: test -z "$(go fmt ./...)"
+    - name: Lint source code
+      uses: golangci/golangci-lint-action@v4
+      with:
+        version: latest
     - name: Look for suspicious constructs
       run: test -z "$(go vet ./...)"
     - name: Run tests
@@ -49,7 +53,7 @@ jobs:
         manifest-file: .github/release-manifest.json
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Update user-agent version number
-      if: ${{ steps.release.outputs.prs_created }}
+      if: ${{ steps.release.outputs.prs_created == 'true' }}
       uses: ./.github/actions/update-user-agent
       with:
         branch: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
