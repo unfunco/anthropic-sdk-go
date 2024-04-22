@@ -38,16 +38,19 @@ claude := anthropic.NewClient(transport.Client())
 Once constructed, you can use the client to interact with the REST API.
 
 ```go
-data, _, err := claude.Messages.Create(context.Background(), &anthropic.CreateMessageInput{
-    MaxTokens: 1024,
-    Messages: []anthropic.Message{
-        {
-            Content: "Hello, Claude!",
-            Role:    "user",
+data, _, err := claude.Messages.Create(
+    context.Background(),
+    &anthropic.CreateMessageInput{
+        MaxTokens: 1024,
+        Messages: []anthropic.Message{
+            {
+                Content: "Hello, Claude!",
+                Role:    "user",
+            },
         },
+        Model: anthropic.Claude3Opus20240229,
     },
-    Model: anthropic.Claude3Opus20240229,
-})
+)
 ```
 
 ### Development and testing
