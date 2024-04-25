@@ -1,5 +1,8 @@
 # Anthropic SDK for Go
 
+[![CI](https://github.com/unfunco/anthropic-sdk-go/actions/workflows/ci.yaml/badge.svg)](https://github.com/unfunco/anthropic-sdk-go/actions/workflows/ci.yaml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+
 > [!NOTE]\
 > This is not an official SDK, and I am not affiliated with [Anthropic].\
 > Official SDKs from Anthropic are available
@@ -31,7 +34,7 @@ containing your [Claude API key]. The derived HTTP client will automatically add
 the API key as a header to each request sent to the API.
 
 ```go
-transport := &anthropic.Transport{APIKey: os.Getenv("ANTHROPIC_API_KEY")}
+transport := anthropic.NewTransport(os.Getenv("ANTHROPIC_API_KEY"))
 claude := anthropic.NewClient(transport.Client())
 ```
 
