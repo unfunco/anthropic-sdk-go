@@ -52,8 +52,15 @@ jobs:
         config-file: .github/release-config.json
         manifest-file: .github/release-manifest.json
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Update user-agent version number
+    - name: Update the version number
       if: ${{ steps.release.outputs.prs_created == 'true' }}
-      uses: ./.github/actions/update-user-agent
-      with:
-        branch: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
+      run: |
+        git checkout ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
+        version=$(jq -r '."."' .github/release-manifest.json)
+        version=${version#v}
+        sed -i 's/const semanticVersion = \"v[0-9]*\.[0-9]*\.[0-9]*\"/cconst semanticVersion = \"v$version\"' version.go
+        git config --local user.name "David Letterman"
+        git config --local user.email "48985810+david-letterman@users.noreply.github.com"
+        git add anthropic.go
+        git commit -m "chore: Configure user-agent version number"
+        git push
