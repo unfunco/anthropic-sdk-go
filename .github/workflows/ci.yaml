@@ -56,6 +56,7 @@ jobs:
       if: ${{ steps.release.outputs.prs_created == 'true' }}
       run: |
         git checkout ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
+        git pull origin ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
         version=$(jq -r '."."' .github/release-manifest.json)
         version=${version#v}
         sed -i '/const semanticVersion = \"v[0-9]*\.[0-9]*\.[0-9]*\"/cconst semanticVersion = \"v$version\"' version.go
