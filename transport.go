@@ -11,6 +11,12 @@ type Transport struct {
 	APIKey string
 }
 
+// NewTransport constructs and returns a new Transport struct that includes the
+// given API key as a header in each request.
+func NewTransport(apiKey string) *Transport {
+	return &Transport{APIKey: apiKey}
+}
+
 // Client returns an HTTP client that will include the API key in the request,
 // and is safe for concurrent use by multiple goroutines.
 func (t *Transport) Client() *http.Client {
