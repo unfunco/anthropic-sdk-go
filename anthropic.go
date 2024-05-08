@@ -15,7 +15,7 @@ import (
 const (
 	defaultAPIVersion    = "2023-06-01"
 	defaultBaseURL       = "https://api.anthropic.com/v1/"
-	defaultBaseUserAgent = "unfunco/anthropic-sdk-go"
+	defaultBaseUserAgent = "anthropic-sdk-go"
 )
 
 // Client manages communication with the Anthropic REST API.
@@ -77,7 +77,7 @@ func (c *Client) NewRequest(method, path string, body any) (*http.Request, error
 	}
 
 	req.Header.Set("anthropic-version", defaultAPIVersion)
-	req.Header.Set("user-agent", defaultBaseUserAgent+"@"+semanticVersion)
+	req.Header.Set("user-agent", defaultBaseUserAgent+"/"+semanticVersion)
 
 	if body != nil {
 		req.Header.Set("content-type", "application/json")

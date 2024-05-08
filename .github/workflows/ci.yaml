@@ -55,11 +55,12 @@ jobs:
     - name: Update the version number
       if: ${{ steps.release.outputs.prs_created == 'true' }}
       run: |
+        git config pull.ff only
         git checkout ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
         git pull origin ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
         version=$(jq -r '."."' .github/release-manifest.json)
         version=${version#v}
-        sed -i '/const semanticVersion = \"v[0-9]*\.[0-9]*\.[0-9]*\"/cconst semanticVersion = \"v$version\"' version.go
+        sed -i '/const semanticVersion = \"[0-9]*\.[0-9]*\.[0-9]*\"/cconst semanticVersion = \"$version\"' version.go
         git config --local user.name "David Letterman"
         git config --local user.email "48985810+david-letterman@users.noreply.github.com"
         git add version.go
