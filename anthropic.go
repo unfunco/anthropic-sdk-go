@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"net/url"
@@ -94,7 +95,7 @@ func (c *Client) NewRequest(method, path string, body any) (*http.Request, error
 // https://github.com/google/go-github/blob/master/github/github.go
 func (c *Client) Do(ctx context.Context, req *http.Request, v any) (*http.Response, error) {
 	if ctx == nil {
-		ctx = context.Background()
+		return nil, errors.New("context must be non-nil")
 	}
 
 	req = req.WithContext(ctx)
