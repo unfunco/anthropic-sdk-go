@@ -60,7 +60,13 @@ jobs:
         git pull origin ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
         version=$(jq -r '."."' .github/release-manifest.json)
         version=${version#v}
-        sed -i '/const semanticVersion = \"[0-9]*\.[0-9]*\.[0-9]*\"/cconst semanticVersion = \"$version\"' version.go
+        cat << EOF > version.go
+        package anthropic
+
+        // semanticVersion does not need to be updated manually.
+        // It is automatically updated by the release process.
+        const semanticVersion = "$version"
+        EOF
         git config --local user.name "David Letterman"
         git config --local user.email "48985810+david-letterman@users.noreply.github.com"
         git add version.go
