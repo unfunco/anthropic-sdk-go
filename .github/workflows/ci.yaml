@@ -53,9 +53,9 @@ jobs:
         manifest-file: .github/release-manifest.json
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Update the version number
-      if: ${{ steps.release.outputs.prs_created == 'true' }}
+      if: steps.release.outputs.prs_created && steps.release.outputs.pr != null
       run: |
-        git config pull.ff only
+        git config pull.rebase true
         git checkout ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
         git pull origin ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
         version=$(jq -r '."."' .github/release-manifest.json)
@@ -65,4 +65,4 @@ jobs:
         git config --local user.email "48985810+david-letterman@users.noreply.github.com"
         git add version.go
         git commit -m "chore: Configure the version number"
-        git push
+        git push origin ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
