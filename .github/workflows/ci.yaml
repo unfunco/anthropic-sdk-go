@@ -47,7 +47,7 @@ jobs:
         fetch-depth: 0
     - name: Prepare a release
       id: release
-      uses: google-github-actions/release-please-action@v4
+      uses: googleapis/release-please-action@v4
       with:
         config-file: .github/release-config.json
         manifest-file: .github/release-manifest.json
