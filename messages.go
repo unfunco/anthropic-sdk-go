@@ -12,13 +12,8 @@ type Message struct {
 	Role    string `json:"role"`
 }
 
-type Content struct {
-	Type string `json:"type"`
-	Text string `json:"text"`
-}
-
-// CreateMessageInput defines a structured list of input messages.
-type CreateMessageInput struct {
+// CreateMessageOptions ...
+type CreateMessageOptions struct {
 	// Temperature defines the amount of randomness injected into the response.
 	// Note that even with a temperature of 0.0, results will not be fully
 	// deterministic.
@@ -59,14 +54,17 @@ type CreateMessageInput struct {
 
 // CreateMessageOutput defines the response from creating a new message.
 type CreateMessageOutput struct {
-	ID           *string    `json:"id"`
-	Type         *string    `json:"type"`
-	Role         *string    `json:"role"`
-	Model        *string    `json:"model"`
-	StopSequence *string    `json:"stop_sequence"`
-	StopReason   *string    `json:"stop_reason"`
-	Usage        *Usage     `json:"usage"`
-	Content      []*Content `json:"content"`
+	ID           *string `json:"id"`
+	Type         *string `json:"type"`
+	Role         *string `json:"role"`
+	Model        *string `json:"model"`
+	StopSequence *string `json:"stop_sequence"`
+	StopReason   *string `json:"stop_reason"`
+	Usage        *Usage  `json:"usage"`
+	Content      []*struct {
+		Type string `json:"type"`
+		Text string `json:"text"`
+	} `json:"content"`
 }
 
 // String implements the fmt.Stringer interface for CreateMessageOutput.
@@ -77,18 +75,18 @@ func (c *CreateMessageOutput) String() string {
 // Create creates a new message using the provided options.
 func (c *MessagesService) Create(
 	ctx context.Context,
-	in *CreateMessageInput,
+	opts *CreateMessageOptions,
 ) (*CreateMessageOutput, *http.Response, error) {
-	req, err := c.client.NewRequest(http.MethodPost, "messages", in)
+	req, err := c.client.NewRequest(http.MethodPost, "messages", opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	out := new(CreateMessageOutput)
-	resp, err := c.client.Do(ctx, req, out)
+	output := new(CreateMessageOutput)
+	resp, err := c.client.Do(ctx, req, output)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return out, resp, nil
+	return output, resp, nil
 }

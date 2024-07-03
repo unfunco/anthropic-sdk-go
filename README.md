@@ -41,19 +41,51 @@ claude := anthropic.NewClient(transport.Client())
 Once constructed, you can use the client to interact with the REST API.
 
 ```go
-data, _, err := claude.Messages.Create(
-    context.Background(),
-    &anthropic.CreateMessageInput{
-        MaxTokens: 1024,
-        Messages: []anthropic.Message{
-            {
-                Content: "Hello, Claude!",
-                Role:    "user",
-            },
+out, _, err := claude.Messages.Create(ctx, &anthropic.CreateMessageOptions{
+    MaxTokens: 1024,
+    Messages: []anthropic.Message{
+        {
+            Content: "Hello, Claude!",
+            Role:    "user",
         },
-        Model: anthropic.Claude3Opus20240229,
     },
-)
+    Model: anthropic.Claude3Opus20240229,
+})
+```
+
+#### Streaming
+
+Streaming support is available.
+
+```go
+events, _, err := claude.Messages.Stream(ctx, &anthropic.StreamMessageOptions{
+    MaxTokens: 1024,
+    Messages: []anthropic.Message{
+        {
+            Content: "Hello, Claude!",
+            Role:    "user",
+        },
+    },
+    Model:  anthropic.Claude3Opus20240229,
+})
+```
+
+```go
+for {
+    select {
+    case <-ctx.Done():
+        return
+    case event := <-events:
+        fmt.Println(event.Data)
+    }
+}
+```
+
+The Stream method is a wrapper around the Create method that sets the `stream`
+parameter to `true`. The Stream method returns a channel of `Event` structs.
+
+```go
+
 ```
 
 ### Development and testing
