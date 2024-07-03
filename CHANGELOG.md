@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.2.0](https://github.com/unfunco/anthropic-sdk-go/compare/v0.1.0...v0.2.0) (2024-07-03)
+
+
+### New features
+
+* Add a constructor for the Transport ([#18](https://github.com/unfunco/anthropic-sdk-go/issues/18)) ([7707c5f](https://github.com/unfunco/anthropic-sdk-go/commit/7707c5f905c7207487656fe0b468ae4c849020d0))
+* Add convenience methods for pointer creation ([#24](https://github.com/unfunco/anthropic-sdk-go/issues/24)) ([90623c7](https://github.com/unfunco/anthropic-sdk-go/commit/90623c7beca3a808aae0fa60a5a90dcf0ddc1dc4))
+* Add support for the Claude 3.5 Sonnet model ([#27](https://github.com/unfunco/anthropic-sdk-go/issues/27)) ([d0f5ca9](https://github.com/unfunco/anthropic-sdk-go/commit/d0f5ca9e9a964ba3ba8ca7e62adea048b9cef14c))
+
+
+### Bug fixes
+
+* Fix an ineffectual assignment to err ([#11](https://github.com/unfunco/anthropic-sdk-go/issues/11)) ([fdf2a64](https://github.com/unfunco/anthropic-sdk-go/commit/fdf2a64a04274d1b5aafd7a643462aca4cd8bfe0))
+* Fix name of the claude-3-haiku-20240307 const ([#13](https://github.com/unfunco/anthropic-sdk-go/issues/13)) ([430676d](https://github.com/unfunco/anthropic-sdk-go/commit/430676de0a1c718f76dcf948dc6d09cc7e1171bd))
+* Fix the format of the user-agent header ([#23](https://github.com/unfunco/anthropic-sdk-go/issues/23)) ([de05838](https://github.com/unfunco/anthropic-sdk-go/commit/de058382074e1e2084975d2274580c92687484cf))
+* Return an error if the context is nil ([#22](https://github.com/unfunco/anthropic-sdk-go/issues/22)) ([c284ec6](https://github.com/unfunco/anthropic-sdk-go/commit/c284ec6d43950fa4401d8711d4fec402206496a7))
+
+
+### Miscellaneous
+
+* Add workflow badges to the README ([#15](https://github.com/unfunco/anthropic-sdk-go/issues/15)) ([059718d](https://github.com/unfunco/anthropic-sdk-go/commit/059718d9b917acf5bf67d1acdad10d5f04fd7ff2))
+* Automatically add labels to pull requests ([#17](https://github.com/unfunco/anthropic-sdk-go/issues/17)) ([5c1335c](https://github.com/unfunco/anthropic-sdk-go/commit/5c1335ca51aeb7bdb4d0dc7c73ed72114ca2dc65))
+* Configure golangci-lint in GitHub Actions ([#10](https://github.com/unfunco/anthropic-sdk-go/issues/10)) ([83b8766](https://github.com/unfunco/anthropic-sdk-go/commit/83b8766c74f0058da0446619279e3db0ec3cb41e))
+* Fix a broken automated commit process ([#19](https://github.com/unfunco/anthropic-sdk-go/issues/19)) ([a7f0d4e](https://github.com/unfunco/anthropic-sdk-go/commit/a7f0d4ed2c142ec30751d0e118cbe2fe190ccf93))
+* Make version updates less fiddly ([#25](https://github.com/unfunco/anthropic-sdk-go/issues/25)) ([d7b24a9](https://github.com/unfunco/anthropic-sdk-go/commit/d7b24a931e1330e5181cd1af8e87f7391fe527bf))
+* Pull before committing version changes ([#20](https://github.com/unfunco/anthropic-sdk-go/issues/20)) ([c1bda69](https://github.com/unfunco/anthropic-sdk-go/commit/c1bda6992e6601f15452e3a2ae6d1dbda2238dbc))
+* Reformat code in the README document ([#14](https://github.com/unfunco/anthropic-sdk-go/issues/14)) ([696f732](https://github.com/unfunco/anthropic-sdk-go/commit/696f732979b4d2903b2d45ce911d0393264511ee))
+* Simplify user-agent and version updates ([#16](https://github.com/unfunco/anthropic-sdk-go/issues/16)) ([9ebd683](https://github.com/unfunco/anthropic-sdk-go/commit/9ebd683211c4f13800a69f4bf6f15c5b65cde5fc))
+* Update release-please-action organisation ([#26](https://github.com/unfunco/anthropic-sdk-go/issues/26)) ([a01ee1f](https://github.com/unfunco/anthropic-sdk-go/commit/a01ee1f656720bb51ddd12db6f536c7f209ef524))
+
 ## 0.1.0 (2024-04-18)
 
 
