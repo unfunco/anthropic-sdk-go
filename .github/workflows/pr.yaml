@@ -12,6 +12,12 @@ on:
     - README.md
 
 jobs:
+  verify-go:
+    name: Verify Go
+    permissions:
+      contents: read
+    uses: unfunco/meta/.github/workflows/verify-go.yaml@dc15f9a32fe01b1b7cc44e095ab9e9bdd98bb0b7
+
   verify:
     name: Verify
     runs-on: ubuntu-latest
@@ -22,13 +28,9 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version-file: go.mod
-    - name: Check formatting
-      run: test -z "$(go fmt ./...)"
     - name: Lint source code
       uses: golangci/golangci-lint-action@v4
       with:
         version: latest
-    - name: Look for suspicious constructs
-      run: test -z "$(go vet ./...)"
-    - name: Run tests
+    - name: Run tests with coverage
       run: go test -cover -v ./...
