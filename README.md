@@ -3,6 +3,9 @@
 [![CI](https://github.com/unfunco/anthropic-sdk-go/actions/workflows/ci.yaml/badge.svg)](https://github.com/unfunco/anthropic-sdk-go/actions/workflows/ci.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 
+> [!NOTE]
+> This project predates Anthropic's official Go SDK. Use [Anthropic's official Go SDK](https://github.com/anthropics/anthropic-sdk-go) instead; this repository will no longer be developed.
+
 > [!NOTE]\
 > This is not an official SDK, and I am not affiliated with [Anthropic].\
 > Official SDKs from Anthropic are available
